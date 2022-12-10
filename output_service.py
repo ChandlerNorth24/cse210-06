@@ -7,6 +7,7 @@ import pathlib
 import constants
 from player import Player
 from color import Color
+import random
 
 class OutputService():
     def __init__(self, player):
@@ -14,6 +15,7 @@ class OutputService():
         self._cur_time = datetime.now()
         self._player = player
         self._textures = {}
+        self._basic_descriptions = []
 
     def close_window(self):
         pyray.close_window()
@@ -29,14 +31,56 @@ class OutputService():
         else:
             self.draw_single_actor(actor)
 
+    def draw_basic_item(self, actor):
+        text = actor.get_text()
+        x = actor.get_position().get_x() - (self._player.get_position().get_x() - constants.MAX_X / 2)
+        y = actor.get_position().get_y() - (self._player.get_position().get_y() - constants.MAX_Y / 2)
+        font_size = actor.get_font_size()
+        color = actor.get_color().to_tuple()
+        pyray.draw_text(text, int(x), int(y), font_size, color)
+
+    def draw_legendary_item(self, actor):
+        text = actor.get_text()
+        x = actor.get_position().get_x() - (self._player.get_position().get_x() - constants.MAX_X / 2)
+        y = actor.get_position().get_y() - (self._player.get_position().get_y() - constants.MAX_Y / 2)
+        font_size = actor.get_font_size()
+        color = actor.get_color().to_tuple()
+        pyray.draw_text(text, int(x), int(y), font_size, color)
+
+
+    def draw_basic_description(self, actor):
+        x = actor.get_position().get_x()
+        y = actor.get_position().get_y()
+        font_size = actor.get_font_size()
+        color = actor.get_color().to_tuple()
+
+        for line in actor._lines:
+            pyray.draw_text(line, int(x), int(y), font_size, color)
+            y = y + 30
+
+    def draw_portrait(self, actor):
+        x = actor.get_position().get_x()
+        y = actor.get_position().get_y()
+
+        position = pyray.Vector2(x, y)
+        scale = 1
+        rotation = 0
+        tint = pyray.Color(255, 255, 255, 255)
+        if actor._file != None:
+            print(actor._file)
+            print(actor._name)
+            print(actor._lines)
+            texture = self._textures[actor._file]
+            pyray.draw_texture_ex(texture, position, rotation, scale, tint)
+
     def draw_single_actor(self, actor):
         text = actor.get_text()
         x = actor.get_position().get_x() - (self._player.get_position().get_x() - constants.MAX_X / 2)
         y = actor.get_position().get_y() - (self._player.get_position().get_y() - constants.MAX_Y / 2)
         font_size = actor.get_font_size()
         color = actor.get_color().to_tuple()
-
         pyray.draw_text(text, int(x), int(y), font_size, color)
+
     def draw_player(self, actor):
         center_x = constants.MAX_X / 2
         center_y = constants.MAX_Y / 2
@@ -146,6 +190,11 @@ class OutputService():
             output_service.flush_buffer()
 
         output_service.close_window()
+
+    def get_basic_description(self):
+        length = len(self._basic_descriptions)
+        randomIndex = random.randint(0, length-1)
+        return self._basic_descriptions[randomIndex]
 
 def main():
     OutputService.test_draw()

@@ -26,7 +26,7 @@ class Player(Drawable):
         if direction._x != 0 or direction._y != 0:
             self._prev_direction = direction
         self._direction = direction
-        print(f"set direction {direction._x} {direction._y}")
+        #print(f"set direction {direction._x} {direction._y}")
     def get_direction(self):
         return self._direction
     def update_velocity(self): #"update velocity" is a better name
