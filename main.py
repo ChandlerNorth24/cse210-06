@@ -9,6 +9,8 @@ from output_service import OutputService
 from input_service import InputService
 from basic_item import basic_item
 from point import Point
+from load_assets_action import LoadAssetsAction
+from unload_assets_action import UnloadAssetsAction
 
 
 def main():
@@ -25,6 +27,8 @@ def main():
     input_service = InputService()
 
     script = Script()
+    script.add_action("loading", LoadAssetsAction(output_service))
+    script.add_action("unloading", UnloadAssetsAction(output_service))
     script.add_action("input", ControlActorsAction(input_service))
     script.add_action("update", MoveActorsAction(output_service))
     #move actors needs output service too because actors need to get deltatime to update their positions
