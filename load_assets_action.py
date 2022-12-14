@@ -62,21 +62,15 @@ class LoadAssetsAction(Action):
                 legendary_index = legendary_index + 1
     def randomly_place_legendaries(self, cast):
         legendary_items = cast.get_actors("legendary_items")
-        random_xs = [random.randint(0, constants.MAX_X)]
-        random_ys = [random.randint(0, constants.MAX_Y)]
+        rand_points = [Point(random.randint(0, constants.MAX_X), random.randint(0, constants.MAX_Y))]
         print(legendary_items)
         for i in range(0, len(legendary_items)):
-            #random_xs.append(random.randint(0, constants.MAX_X))
-            #random_ys.append(random.randint(0, constants.MAX_Y))
-            random_xs.append(random.randint(- 5 * constants.MAX_X, 5 * constants.MAX_X))
-            random_ys.append(random.randint(-5 * constants.MAX_Y, 5 * constants.MAX_Y))
-        print(random_xs)
-        print(random_ys)
-        random.shuffle(random_xs)
-        random.shuffle(random_ys)
+            rand_points.append(Point(random.randint(- 5 * constants.MAX_X, 5 * constants.MAX_X), random.randint(-5 * constants.MAX_Y, 5 * constants.MAX_Y)))
+        print(rand_points)
+        random.shuffle(rand_points)
         i = 0
         for legendary in legendary_items:
-            legendary.set_position(Point(random_xs[i], random_ys[i]))
+            legendary.set_position(rand_points[i])
             i = i + 1
     def randomize_legendary_positions(self, cast):
         column_start_y = 0 - constants.MAX_Y * 5
